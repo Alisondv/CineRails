@@ -1,0 +1,5 @@
+<%# Mostra uma nota de 0 a 5 em estrelas. Local: rating (pode ser nil ou decimal). %>
+<% rating = rating.to_f.round %>
+<span class="text-yellow-400 tracking-wider" role="img" aria-label="<%= rating %> de 5 estrelas">
+  <%= "★" * rating %><span class="text-gray-600"><%= "★" * (5 - rating) %></span>
+</span>

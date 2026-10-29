@@ -1,0 +1,18 @@
+<%# Botão "+ Minha Lista" / "✓ Na lista". Local: tmdb_id.
+    O id do elemento (list_button_123) é o ALVO dos Turbo Streams:
+    create/destroy.turbo_stream.erb substituem só este botão na página. %>
+<div id="list_button_<%= tmdb_id %>">
+  <% if current_profile.in_list?(tmdb_id) %>
+    <%# button_to gera um <form> (method DELETE). O Turbo intercepta o submit,
+        envia via fetch pedindo "text/vnd.turbo-stream.html" e aplica a resposta. %>
+    <%= button_to movie_list_item_path(tmdb_id), method: :delete,
+          class: "inline-flex items-center gap-2 rounded-md border border-white/40 bg-black/40 px-5 py-2.5 font-bold hover:bg-black/60 cursor-pointer" do %>
+      <span aria-hidden="true">✓</span> Na Minha Lista
+    <% end %>
+  <% else %>
+    <%= button_to movie_list_item_path(tmdb_id), method: :post,
+          class: "inline-flex items-center gap-2 rounded-md bg-brand px-5 py-2.5 font-bold hover:bg-brand-dark cursor-pointer" do %>
+      <span aria-hidden="true">+</span> Minha Lista
+    <% end %>
+  <% end %>
+</div>

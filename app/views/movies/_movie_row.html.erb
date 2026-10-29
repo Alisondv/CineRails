@@ -1,0 +1,11 @@
+<%# Fileira horizontal rolável. Locals: title, movies (array de hashes do TMDB).
+    Ela reaproveita o partial _movie_card para cada filme. %>
+<section class="mt-8">
+  <h2 class="px-4 sm:px-12 mb-2 text-lg sm:text-xl font-bold"><%= title %></h2>
+  <div class="no-scrollbar flex gap-2 overflow-x-auto px-4 sm:px-12 py-4 snap-x">
+    <% movies.each do |movie| %>
+      <%= render "movies/movie_card", tmdb_id: movie["id"], title: movie["title"],
+                 poster_path: movie["poster_path"], card_class: "w-32 sm:w-40 lg:w-44 snap-start" %>
+    <% end %>
+  </div>
+</section>

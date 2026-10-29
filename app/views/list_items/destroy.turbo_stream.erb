@@ -1,0 +1,13 @@
+<%# Atualiza o botão (página do filme/hero)... %>
+<%= turbo_stream.replace "list_button_#{@movie.tmdb_id}",
+      partial: "list_items/button", locals: { tmdb_id: @movie.tmdb_id } %>
+
+<%# ...e, se estivermos na tela Minha Lista, remove o card da grade.
+    Se o alvo não existir na página, o Turbo simplesmente ignora. %>
+<%= turbo_stream.remove "my_list_movie_#{@movie.tmdb_id}" %>
+
+<%= turbo_stream.update "flash" do %>
+  <div data-controller="autohide" class="rounded-md bg-white px-4 py-3 text-sm text-black shadow-lg">
+    "<%= @movie.title %>" saiu da sua lista.
+  </div>
+<% end %>

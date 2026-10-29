@@ -1,0 +1,11 @@
+<%# Resposta Turbo Stream: uma lista de <turbo-stream action="..." target="...">.
+    O Turbo, no navegador, procura o elemento com esse id e aplica a ação.
+    Nada de recarregar a página: só o botão é trocado. %>
+<%= turbo_stream.replace "list_button_#{@movie.tmdb_id}",
+      partial: "list_items/button", locals: { tmdb_id: @movie.tmdb_id } %>
+
+<%= turbo_stream.update "flash" do %>
+  <div data-controller="autohide" class="rounded-md bg-white px-4 py-3 text-sm text-black shadow-lg">
+    "<%= @movie.title %>" entrou na sua lista.
+  </div>
+<% end %>

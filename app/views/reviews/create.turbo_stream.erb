@@ -1,0 +1,18 @@
+<%# Uma única resposta, TRÊS atualizações na tela (sem recarregar a página):
+    1) a média, 2) a lista de avaliações, 3) o formulário. %>
+<% reviews = @movie.reviews.recent.includes(:profile) %>
+
+<%= turbo_stream.update "reviews_summary",
+      partial: "reviews/summary", locals: { average: @movie.average_rating, count: reviews.size } %>
+
+<%= turbo_stream.update "reviews_list",
+      partial: "reviews/list", locals: { reviews: reviews } %>
+
+<%= turbo_stream.replace "review_form",
+      partial: "reviews/form", locals: { review: @review, tmdb_id: @movie.tmdb_id } %>
+
+<%= turbo_stream.update "flash" do %>
+  <div data-controller="autohide" class="rounded-md bg-white px-4 py-3 text-sm text-black shadow-lg">
+    Avaliação salva!
+  </div>
+<% end %>

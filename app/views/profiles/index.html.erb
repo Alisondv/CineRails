@@ -1,0 +1,22 @@
+<% content_for :title, "Quem está assistindo?" %>
+
+<div class="flex min-h-[80vh] flex-col items-center justify-center px-4">
+  <p class="mb-10 text-4xl font-black tracking-tight text-brand">Cine<span class="text-white">Rails</span></p>
+  <h1 class="text-3xl sm:text-5xl font-medium">Quem está assistindo?</h1>
+
+  <div class="mt-10 flex flex-wrap justify-center gap-6 sm:gap-10">
+    <% @profiles.each do |profile| %>
+      <%# Cada avatar é um botão que faz POST /session com o profile_id. %>
+      <%= button_to session_path, params: { profile_id: profile.id },
+            class: "group flex flex-col items-center gap-3 cursor-pointer" do %>
+        <%= profile_avatar(profile, size: "w-24 h-24 sm:w-36 sm:h-36 text-5xl sm:text-6xl
+                                          ring-white transition group-hover:ring-4 group-focus-visible:ring-4") %>
+        <span class="text-gray-400 group-hover:text-white"><%= profile.name %></span>
+      <% end %>
+    <% end %>
+  </div>
+
+  <% if @profiles.empty? %>
+    <p class="mt-10 text-gray-400">Nenhum perfil cadastrado. Rode <code class="text-white">bin/rails db:seed</code>.</p>
+  <% end %>
+</div>

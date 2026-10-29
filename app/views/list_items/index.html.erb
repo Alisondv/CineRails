@@ -1,0 +1,24 @@
+<% content_for :title, "Minha Lista" %>
+
+<div class="px-4 sm:px-12 pt-28">
+  <h1 class="text-3xl font-bold">Minha Lista</h1>
+  <p class="mt-1 text-gray-400">Filmes salvos por <%= current_profile.name %>.</p>
+
+  <% if @movies.any? %>
+    <div class="mt-8 grid grid-cols-2 sm:grid-cols-4 md:grid-cols-5 lg:grid-cols-6 gap-4">
+      <% @movies.each do |movie| %>
+        <%# dom id usado pelo turbo_stream.remove em destroy.turbo_stream.erb %>
+        <div id="my_list_movie_<%= movie.tmdb_id %>" class="space-y-2">
+          <%= render "movies/movie_card", tmdb_id: movie.tmdb_id, title: movie.title, poster_path: movie.poster_path %>
+          <%= button_to "Remover", movie_list_item_path(movie.tmdb_id), method: :delete,
+                class: "w-full rounded-md border border-white/20 py-1.5 text-xs text-gray-300 hover:border-brand hover:text-white cursor-pointer" %>
+        </div>
+      <% end %>
+    </div>
+  <% else %>
+    <div class="mt-16 text-center text-gray-400">
+      <p class="text-lg">Sua lista está vazia.</p>
+      <%= link_to "Explorar filmes", root_path, class: "mt-4 inline-block rounded-md bg-brand px-6 py-2.5 font-bold text-white hover:bg-brand-dark" %>
+    </div>
+  <% end %>
+</div>

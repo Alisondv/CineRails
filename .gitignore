@@ -1,0 +1,17 @@
+# Chave que descriptografa config/credentials.yml.enc (onde está o token do TMDB).
+# NUNCA commitar: sem ela, o arquivo .enc é ilegível.
+/config/master.key
+
+/.bundle
+/log/*
+!/log/.keep
+/tmp/*
+!/tmp/.keep
+/tmp/pids/*
+!/tmp/pids/.keep
+/storage/*
+!/storage/.keep
+/public/assets
+/app/assets/builds/*
+!/app/assets/builds/.keep
+.env*

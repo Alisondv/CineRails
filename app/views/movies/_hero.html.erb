@@ -1,0 +1,26 @@
+<%# Banner grande no topo da home. Local: movie (hash do TMDB). %>
+<section class="relative h-[70vh] min-h-[420px] w-full overflow-hidden">
+  <%= image_tag backdrop_url(movie["backdrop_path"], size: "original"), alt: "",
+        class: "absolute inset-0 h-full w-full object-cover object-top" %>
+  <%# Dois gradientes: escurece a esquerda (texto legível) e funde a base com o fundo. %>
+  <div class="absolute inset-0 bg-gradient-to-r from-black/90 via-black/50 to-transparent"></div>
+  <div class="absolute inset-x-0 bottom-0 h-40 bg-gradient-to-t from-ink to-transparent"></div>
+
+  <div class="relative flex h-full flex-col justify-end px-4 sm:px-12 pb-20 max-w-2xl">
+    <p class="mb-2 text-sm font-semibold uppercase tracking-widest text-brand">Em alta esta semana</p>
+    <h1 class="text-4xl sm:text-6xl font-black drop-shadow-lg"><%= movie["title"] %></h1>
+    <p class="mt-4 text-sm sm:text-base text-gray-200 drop-shadow">
+      <%= truncate(movie["overview"].presence || "Sinopse indisponível em português.", length: 220) %>
+    </p>
+
+    <div class="mt-6 flex flex-wrap items-center gap-3">
+      <%= link_to movie_path(movie["id"], anchor: "trailer"),
+            class: "inline-flex items-center gap-2 rounded-md bg-white px-6 py-2.5 font-bold text-black hover:bg-white/80" do %>
+        <span aria-hidden="true">▶</span> Assistir trailer
+      <% end %>
+      <%= render "list_items/button", tmdb_id: movie["id"] %>
+      <%= link_to "Mais informações", movie_path(movie["id"]),
+            class: "rounded-md bg-gray-500/60 px-6 py-2.5 font-bold hover:bg-gray-500/40" %>
+    </div>
+  </div>
+</section>

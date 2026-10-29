@@ -1,0 +1,4 @@
+# Associações em fixtures: basta usar o nome da outra fixture.
+ana_matrix:
+  profile: ana
+  movie: matrix

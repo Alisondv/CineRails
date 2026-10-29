@@ -1,0 +1,10 @@
+<%# Locals: average (decimal ou nil), count %>
+<% if count.positive? %>
+  <p class="flex items-center gap-3 text-gray-300">
+    <%= render "movies/rating_stars", rating: average %>
+    <span><strong class="text-white"><%= number_with_precision(average, precision: 1) %></strong> de 5
+      · <%= pluralize(count, "avaliação", plural: "avaliações") %></span>
+  </p>
+<% else %>
+  <p class="text-gray-400">Ainda não há avaliações. Seja o primeiro!</p>
+<% end %>

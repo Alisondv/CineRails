@@ -1,0 +1,9 @@
+<%# A view só MONTA a tela com os dados que o controller preparou (@hero, @rows).
+    Cada pedaço é um partial reaproveitável. %>
+<%= render "movies/hero", movie: @hero if @hero %>
+
+<div class="relative z-10 <%= @hero ? '-mt-24' : 'pt-20' %> pb-8">
+  <% @rows.each do |row| %>
+    <%= render "movies/movie_row", title: row[:title], movies: row[:movies] %>
+  <% end %>
+</div>

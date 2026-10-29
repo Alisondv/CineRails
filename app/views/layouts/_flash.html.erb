@@ -1,0 +1,8 @@
+<%# Mensagens "flash" (notice/alert) duram só uma requisição. O id permite que um Turbo Stream as atualize. %>
+<div id="flash" class="fixed top-20 left-1/2 -translate-x-1/2 z-50 w-full max-w-md px-4 space-y-2">
+  <% flash.each do |type, message| %>
+    <div data-controller="autohide" class="rounded-md px-4 py-3 text-sm shadow-lg <%= type == 'alert' ? 'bg-brand' : 'bg-white text-black' %>">
+      <%= message %>
+    </div>
+  <% end %>
+</div>

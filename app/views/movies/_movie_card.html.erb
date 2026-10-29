@@ -1,0 +1,18 @@
+<%# Card de pôster. Locals: tmdb_id, title, poster_path (e opcionalmente card_class).
+    Usado nas fileiras da home, na busca e na Minha Lista. %>
+<%= link_to movie_path(tmdb_id),
+      class: "group relative block shrink-0 overflow-hidden rounded-md bg-neutral-800 shadow-md
+              transition duration-300 ease-out hover:z-10 hover:scale-105 hover:shadow-2xl hover:shadow-black
+              focus-visible:scale-105 focus-visible:outline-2 focus-visible:outline-white #{local_assigns[:card_class]}" do %>
+  <% if (url = poster_url(poster_path, size: "w342")) %>
+    <%= image_tag url, alt: title, loading: "lazy", class: "aspect-[2/3] w-full object-cover" %>
+  <% else %>
+    <div class="aspect-[2/3] w-full flex items-center justify-center p-3 text-center text-sm text-gray-300">
+      <%= title %>
+    </div>
+  <% end %>
+  <div class="pointer-events-none absolute inset-x-0 bottom-0 bg-gradient-to-t from-black/90 to-transparent p-2
+              opacity-0 transition group-hover:opacity-100">
+    <p class="text-xs font-semibold leading-tight"><%= title %></p>
+  </div>
+<% end %>

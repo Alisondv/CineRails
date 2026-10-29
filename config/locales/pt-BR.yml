@@ -1,0 +1,21 @@
+# Nomes dos models e atributos em português (usados em mensagens de erro,
+# ex.: "Nota não pode ficar em branco").
+pt-BR:
+  activerecord:
+    models:
+      profile: Perfil
+      movie: Filme
+      list_item: Item da lista
+      review: Avaliação
+    attributes:
+      profile:
+        name: Nome
+        color: Cor
+      movie:
+        title: Título
+      review:
+        rating: Nota
+        comment: Comentário
+        movie_id: Filme
+      list_item:
+        movie_id: Filme

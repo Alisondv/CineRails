@@ -1,0 +1,8 @@
+# Fixtures = dados de teste carregados no banco antes de cada teste.
+ana:
+  name: Ana
+  color: "#e50914"
+
+bruno:
+  name: Bruno
+  color: "#2563eb"

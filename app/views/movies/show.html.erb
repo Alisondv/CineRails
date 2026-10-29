@@ -1,0 +1,77 @@
+<% content_for :title, @movie["title"] %>
+
+<%# Fundo: backdrop do filme com gradientes por cima. %>
+<section class="relative min-h-[80vh]">
+  <% if (backdrop = backdrop_url(@movie["backdrop_path"])) %>
+    <%= image_tag backdrop, alt: "", class: "absolute inset-0 h-full w-full object-cover opacity-50" %>
+  <% end %>
+  <div class="absolute inset-0 bg-gradient-to-t from-ink via-ink/80 to-ink/30"></div>
+  <div class="absolute inset-0 bg-gradient-to-r from-ink via-ink/60 to-transparent"></div>
+
+  <div class="relative px-4 sm:px-12 pt-28 pb-12 flex flex-col md:flex-row gap-8">
+    <div class="w-48 sm:w-64 shrink-0">
+      <% if (poster = poster_url(@movie["poster_path"])) %>
+        <%= image_tag poster, alt: "Pôster de #{@movie['title']}", class: "w-full rounded-lg shadow-2xl shadow-black" %>
+      <% end %>
+    </div>
+
+    <div class="max-w-3xl">
+      <h1 class="text-4xl sm:text-5xl font-black"><%= @movie["title"] %></h1>
+
+      <div class="mt-3 flex flex-wrap items-center gap-x-4 gap-y-2 text-sm text-gray-300">
+        <% if (year = release_year(@movie["release_date"])) %><span><%= year %></span><% end %>
+        <% if (runtime = format_runtime(@movie["runtime"])) %><span><%= runtime %></span><% end %>
+        <span class="font-semibold text-green-400">TMDB <%= number_with_precision(@movie["vote_average"], precision: 1) %></span>
+      </div>
+
+      <div class="mt-3 flex flex-wrap gap-2">
+        <% @movie["genres"].each do |genre| %>
+          <span class="rounded-full border border-white/30 px-3 py-0.5 text-xs"><%= genre["name"] %></span>
+        <% end %>
+      </div>
+
+      <% if @movie["tagline"].present? %>
+        <p class="mt-5 italic text-gray-400"><%= @movie["tagline"] %></p>
+      <% end %>
+      <p class="mt-3 leading-relaxed text-gray-200">
+        <%= @movie["overview"].presence || "Sinopse indisponível em português." %>
+      </p>
+
+      <div class="mt-6">
+        <%= render "list_items/button", tmdb_id: @movie["id"] %>
+      </div>
+    </div>
+  </div>
+</section>
+
+<%# Trailer: a key vem do endpoint /videos e vira um iframe do YouTube. %>
+<section id="trailer" class="px-4 sm:px-12 mt-4 scroll-mt-24">
+  <h2 class="text-2xl font-bold mb-4">Trailer</h2>
+  <% if @trailer_key %>
+    <div class="aspect-video w-full max-w-4xl overflow-hidden rounded-lg bg-black">
+      <iframe class="h-full w-full" src="https://www.youtube-nocookie.com/embed/<%= @trailer_key %>"
+              title="Trailer de <%= @movie['title'] %>" allowfullscreen
+              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"></iframe>
+    </div>
+  <% else %>
+    <p class="text-gray-400">Nenhum trailer disponível para este filme.</p>
+  <% end %>
+</section>
+
+<%# Avaliações do app (vêm do NOSSO banco, não do TMDB). %>
+<section class="px-4 sm:px-12 mt-12 grid gap-10 lg:grid-cols-[1fr_380px] max-w-6xl">
+  <div>
+    <h2 class="text-2xl font-bold">Avaliações do CineRails</h2>
+    <%# Os ids abaixo são alvos do reviews/create.turbo_stream.erb. %>
+    <div id="reviews_summary" class="mt-2">
+      <%= render "reviews/summary", average: @average, count: @reviews.size %>
+    </div>
+    <div id="reviews_list" class="mt-6">
+      <%= render "reviews/list", reviews: @reviews %>
+    </div>
+  </div>
+
+  <div>
+    <%= render "reviews/form", review: @review, tmdb_id: @movie["id"] %>
+  </div>
+</section>

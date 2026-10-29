@@ -1,0 +1,32 @@
+<%# Renderizada pelo rescue_from do ApplicationController quando o TMDB falha. %>
+<% content_for :title, "Ops!" %>
+
+<div class="mx-auto max-w-2xl px-4 pt-32">
+  <% if @error.is_a?(TmdbClient::MissingTokenError) %>
+    <h1 class="text-3xl font-bold">Falta configurar o token do TMDB 🔑</h1>
+    <p class="mt-4 text-gray-300">
+      O CineRails busca filmes na API do TMDB e precisa de um <strong>API Read Access Token</strong>.
+    </p>
+    <ol class="mt-6 list-decimal space-y-3 pl-6 text-gray-300">
+      <li>Crie uma conta grátis em
+        <%= link_to "themoviedb.org", "https://www.themoviedb.org/signup", class: "text-sky-400 underline", target: "_blank" %>.</li>
+      <li>Em <%= link_to "Configurações › API", "https://www.themoviedb.org/settings/api", class: "text-sky-400 underline", target: "_blank" %>,
+        copie o <strong>API Read Access Token</strong> (o token longo, não a "API Key").</li>
+      <li>Escolha <em>uma</em> das opções:
+        <pre class="mt-2 overflow-x-auto rounded-md bg-black p-3 text-sm text-green-400">export TMDB_TOKEN="seu_token_aqui"
+bin/dev</pre>
+        <p class="my-2">ou</p>
+        <pre class="overflow-x-auto rounded-md bg-black p-3 text-sm text-green-400">bin/rails credentials:edit
+# adicione:
+tmdb:
+  token: seu_token_aqui</pre>
+      </li>
+      <li>Reinicie o servidor e recarregue esta página.</li>
+    </ol>
+  <% else %>
+    <h1 class="text-3xl font-bold">Não conseguimos carregar os filmes agora 😕</h1>
+    <p class="mt-4 text-gray-300"><%= @error.message %></p>
+    <p class="mt-2 text-gray-400">Verifique sua conexão e o token do TMDB, e tente novamente.</p>
+    <%= link_to "Tentar de novo", request.path, class: "mt-6 inline-block rounded-md bg-brand px-6 py-2.5 font-bold hover:bg-brand-dark" %>
+  <% end %>
+</div>

@@ -1,0 +1,14 @@
+<%# Local automático: review (nome do partial = nome da variável). %>
+<article class="flex gap-3 rounded-lg bg-white/5 p-4">
+  <%= profile_avatar(review.profile) %>
+  <div>
+    <div class="flex flex-wrap items-center gap-x-3">
+      <span class="font-semibold"><%= review.profile.name %></span>
+      <%= render "movies/rating_stars", rating: review.rating %>
+      <span class="text-xs text-gray-500">há <%= time_ago_in_words(review.updated_at) %></span>
+    </div>
+    <% if review.comment.present? %>
+      <p class="mt-1 text-gray-300"><%= review.comment %></p>
+    <% end %>
+  </div>
+</article>

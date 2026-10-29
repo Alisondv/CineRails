@@ -1,0 +1,39 @@
+<%# Locals: review, tmdb_id.
+    form_with envia via Turbo (fetch). A resposta é um Turbo Stream que troca
+    este bloco inteiro (id="review_form"), com erros ou com o formulário "limpo". %>
+<div id="review_form" class="rounded-lg bg-white/5 p-5">
+  <h3 class="text-lg font-bold">
+    <%= review.persisted? ? "Sua avaliação" : "Avalie este filme" %>
+  </h3>
+
+  <%= form_with model: review, url: movie_reviews_path(tmdb_id), class: "mt-4 space-y-4" do |form| %>
+    <% if review.errors.any? %>
+      <div class="rounded-md bg-brand/20 border border-brand px-3 py-2 text-sm">
+        <% review.errors.full_messages.each do |message| %>
+          <p><%= message %></p>
+        <% end %>
+      </div>
+    <% end %>
+
+    <fieldset>
+      <legend class="mb-1 text-sm text-gray-400">Nota</legend>
+      <%# Ordem 5..1 de propósito (ver .star-input no CSS). %>
+      <div class="star-input">
+        <% 5.downto(1) do |value| %>
+          <%= form.radio_button :rating, value, class: "sr-only" %>
+          <%= form.label "rating_#{value}", "★", title: "#{value} estrela(s)",
+                aria: { label: "#{value} de 5 estrelas" } %>
+        <% end %>
+      </div>
+    </fieldset>
+
+    <div>
+      <%= form.label :comment, "Comentário (opcional)", class: "mb-1 block text-sm text-gray-400" %>
+      <%= form.text_area :comment, rows: 3, maxlength: 500,
+            class: "w-full rounded-md border border-white/20 bg-black/40 p-3 text-sm focus:border-white focus:outline-none" %>
+    </div>
+
+    <%= form.submit review.persisted? ? "Atualizar avaliação" : "Enviar avaliação",
+          class: "w-full rounded-md bg-brand py-2.5 font-bold hover:bg-brand-dark cursor-pointer" %>
+  <% end %>
+</div>

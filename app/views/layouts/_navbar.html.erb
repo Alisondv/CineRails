@@ -1,0 +1,31 @@
+<%# Partial: pedaço de view reaproveitável. Nome começa com "_" e é chamado com render "layouts/navbar". %>
+<header class="fixed inset-x-0 top-0 z-50 bg-gradient-to-b from-black/95 to-black/70 backdrop-blur-sm">
+  <nav class="flex items-center gap-4 sm:gap-8 px-4 sm:px-12 h-16">
+    <%= link_to root_path, class: "text-2xl sm:text-3xl font-black tracking-tight text-brand" do %>
+      Cine<span class="text-white">Rails</span>
+    <% end %>
+
+    <div class="hidden sm:flex gap-5 text-sm text-gray-300">
+      <%= link_to "Início", root_path, class: "hover:text-white #{'text-white font-semibold' if current_page?(root_path)}" %>
+      <%= link_to "Minha Lista", my_list_path, class: "hover:text-white #{'text-white font-semibold' if current_page?(my_list_path)}" %>
+    </div>
+
+    <div class="ml-auto flex items-center gap-3 sm:gap-5">
+      <%# form_with method: :get monta a URL /busca?q=... (busca não altera dados, então é GET). %>
+      <%= form_with url: search_path, method: :get, class: "flex" do |form| %>
+        <%= form.search_field :q, value: params[:q], placeholder: "Títulos, gente...",
+              aria: { label: "Buscar filmes" },
+              class: "w-32 sm:w-56 rounded-md border border-white/20 bg-black/60 px-3 py-1.5 text-sm text-white placeholder-gray-500 focus:border-white focus:outline-none" %>
+      <% end %>
+
+      <%= link_to my_list_path, class: "sm:hidden text-sm text-gray-300" do %>Lista<% end %>
+
+      <%# button_to cria um mini-formulário: aqui um DELETE /session para trocar de perfil. %>
+      <%= button_to session_path, method: :delete, class: "flex items-center gap-2 cursor-pointer",
+            title: "Trocar de perfil" do %>
+        <%= profile_avatar(current_profile, size: "w-8 h-8 text-sm") %>
+        <span class="hidden md:inline text-sm text-gray-300"><%= current_profile.name %></span>
+      <% end %>
+    </div>
+  </nav>
+</header>
