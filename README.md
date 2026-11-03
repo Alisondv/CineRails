@@ -75,7 +75,13 @@ bin/setup   # instala as gems, cria o banco, roda migrations + seeds e já sobe 
 bin/dev     # sobe o Rails (porta 3000) e o watcher do Tailwind (Procfile.dev)
 ```
 
-Acesse <http://localhost:3000>.
+Acesse <http://localhost:3000>. O seed cria uma **conta de demonstração** pronta para a
+apresentação, já com um perfil:
+
+```
+E-mail: demo@cinerails.test
+Senha:  cinerails123
+```
 
 Testes dos models:
 
@@ -88,7 +94,7 @@ Outros comandos úteis na apresentação:
 ```sh
 bin/rails routes     # tabela de rotas
 bin/rails console    # brincar com os models: Profile.first.movies
-bin/rails db:seed    # recria os perfis
+bin/rails db:seed    # recria a conta de demonstração
 ```
 
 ---
@@ -189,7 +195,7 @@ config/
 db/
 ├── migrate/                       # migrations (histórico do banco)
 ├── schema.rb                      # retrato atual do banco (gerado)
-└── seeds.rb                       # 3 perfis
+└── seeds.rb                       # conta de demonstração + 1 perfil
 test/models/                       # testes de validações e associações
 ```
 
