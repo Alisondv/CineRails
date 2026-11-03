@@ -1,7 +1,4 @@
-# Conta de acesso (e-mail + senha). Cada conta pode ter vários perfis (Profile).
-# Quem usa este model: RegistrationsController (cria contas), UserSessionsController
-# (autentica no login) e ApplicationController#current_user (busca a conta logada
-# pelo id guardado na sessão, em toda requisição).
+# Conta de acesso; cada conta pode ter vários perfis.
 class User < ApplicationRecord
   # has_secure_password: gera os métodos password=, password_confirmation= e
   # authenticate a partir da coluna password_digest (precisa da gem bcrypt,
