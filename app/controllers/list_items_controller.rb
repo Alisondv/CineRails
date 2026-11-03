@@ -1,4 +1,6 @@
-# "Minha Lista" do perfil atual.
+# "Minha Lista" do perfil atual. index é chamado por GET /minha-lista;
+# create/destroy pelos botões "+ Minha Lista" em list_items/_button.html.erb
+# (rotas aninhadas dentro de /movies/:movie_id em config/routes.rb).
 class ListItemsController < ApplicationController
   # GET /minha-lista
   def index

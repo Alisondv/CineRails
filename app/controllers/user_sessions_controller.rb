@@ -1,5 +1,6 @@
-# Login e logout da CONTA (e-mail + senha). Não confundir com o SessionsController,
-# que troca o PERFIL já dentro de uma conta logada.
+# Login e logout da CONTA (e-mail + senha). Chamado pelas rotas GET /login,
+# POST /login e DELETE /logout (config/routes.rb). Não confundir com o
+# SessionsController, que troca o PERFIL já dentro de uma conta logada.
 class UserSessionsController < ApplicationController
   # Estas ações são o próprio ponto de entrada: não tem conta nem perfil ainda.
   skip_before_action :require_login

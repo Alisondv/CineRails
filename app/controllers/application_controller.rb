@@ -1,4 +1,13 @@
-# Todos os controllers herdam daqui, então o que está neste arquivo vale para o app inteiro.
+# Todos os controllers herdam daqui, então o que está neste arquivo vale para
+# o app inteiro: toda requisição passa pelos before_actions abaixo antes de
+# chegar na ação específica (HomeController#index, MoviesController#show...).
+#
+# session: um hash disponível em todo controller e view, que o Rails guarda
+# num cookie assinado no navegador da pessoa (ele NÃO fica no banco). Tudo
+# que a gente coloca em session[:algo] volta inteiro na próxima requisição
+# dessa mesma pessoa, e some quando ela limpa os cookies ou troca de navegador.
+# Aqui usamos pra lembrar qual conta e qual perfil estão "logados"
+# (session[:user_id] e session[:profile_id]).
 class ApplicationController < ActionController::Base
   # Only allow modern browsers supporting webp images, web push, badges, import maps, CSS nesting, and CSS :has.
   allow_browser versions: :modern

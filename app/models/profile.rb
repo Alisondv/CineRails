@@ -1,4 +1,7 @@
-# Perfil da tela "Quem está assistindo?" (sem senha: o id fica na sessão).
+# Perfil da tela "Quem está assistindo?" (sem senha própria: pertence a um User,
+# e o id do perfil escolhido fica na sessão). Quem usa este model: ProfilesController
+# (lista e cria perfis da conta logada), SessionsController (troca o perfil atual)
+# e praticamente todo o resto do app, através de current_profile.
 class Profile < ApplicationRecord
   # Cores disponíveis para o avatar (usadas no seed e nas validações).
   COLORS = %w[#e50914 #2563eb #16a34a #f59e0b #9333ea].freeze

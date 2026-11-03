@@ -1,3 +1,6 @@
+# Tabela das avaliações (1 a 5 estrelas + comentário) que um perfil dá a um filme.
+# Mesmo padrão de CreateListItems: `t.references` cria profile_id/movie_id,
+# índice e foreign key de uma vez.
 class CreateReviews < ActiveRecord::Migration[8.1]
   def change
     create_table :reviews do |t|

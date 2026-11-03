@@ -1,5 +1,6 @@
-# Helpers são métodos disponíveis nas views. Servem para tirar lógica de
-# formatação do HTML e deixar os templates mais legíveis.
+# Helpers de formatação ligados ao TMDB (ver application_helper.rb pra uma
+# explicação geral do que é um helper). Usados nas views de filme, home,
+# busca e Minha Lista pra montar URLs de imagem e formatar data/duração.
 module TmdbHelper
   IMAGE_BASE_URL = "https://image.tmdb.org/t/p"
 

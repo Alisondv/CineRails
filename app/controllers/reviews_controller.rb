@@ -1,4 +1,5 @@
-# Avaliações feitas no app.
+# Avaliações feitas no app. Chamado pela rota POST /movies/:movie_id/reviews
+# (config/routes.rb), a partir do formulário em reviews/_form.html.erb.
 class ReviewsController < ApplicationController
   # POST /movies/:movie_id/reviews
   def create
@@ -24,8 +25,9 @@ class ReviewsController < ApplicationController
 
   private
 
-  # Strong parameters: só deixamos passar os campos esperados do formulário.
-  # Evita que alguém envie, por exemplo, profile_id de outro perfil.
+  # Strong parameters de novo (ver RegistrationsController#registration_params
+  # pra explicação completa): só deixamos passar os campos esperados do
+  # formulário, nunca profile_id ou movie_id vindos do próprio usuário.
   def review_params
     params.expect(review: [ :rating, :comment ])
   end

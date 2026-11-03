@@ -1,4 +1,5 @@
-# Home estilo streaming: banner + fileiras de filmes.
+# Home estilo streaming: banner + fileiras de filmes. É a "root" do app
+# (config/routes.rb: root "home#index"), a primeira tela depois de escolher o perfil.
 # Repare como o controller é enxuto: ele só PEDE os dados ao service (TmdbClient)
 # e os entrega para a view em variáveis de instância (@...).
 class HomeController < ApplicationController

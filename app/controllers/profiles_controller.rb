@@ -1,4 +1,6 @@
 # Tela "Quem está assistindo?" e o formulário "Adicionar perfil".
+# Chamado pelas rotas GET /profiles, GET /profiles/new e POST /profiles
+# (config/routes.rb). Escolher um perfil já existente é o SessionsController.
 class ProfilesController < ApplicationController
   # Esta é justamente a tela onde se escolhe o perfil, então pulamos a exigência.
   skip_before_action :require_profile

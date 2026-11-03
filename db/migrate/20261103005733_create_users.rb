@@ -1,3 +1,5 @@
+# Tabela das contas (login com e-mail e senha). Veio depois das demais:
+# até aqui o projeto não tinha login, só perfis soltos no banco.
 class CreateUsers < ActiveRecord::Migration[8.1]
   def change
     create_table :users do |t|

@@ -14,8 +14,13 @@ Rails.application.routes.draw do
   post   "login",  to: "user_sessions#create",  as: :user_session
   delete "logout", to: "user_sessions#destroy", as: :destroy_user_session
 
-  # "Quem está assistindo?"  GET /profiles => ProfilesController#index
-  # GET /profiles/new e POST /profiles => formulário "Adicionar perfil"
+  # resources: atalho do Rails que gera várias rotas RESTful de uma vez,
+  # cada uma com VERBO HTTP + URL própria, todas apontando pro mesmo
+  # controller (padrão index/show/new/create/edit/update/destroy).
+  # "only:" limita só às ações que a gente realmente usa.
+  #   GET  /profiles      => ProfilesController#index ("Quem está assistindo?")
+  #   GET  /profiles/new  => ProfilesController#new    (formulário "Adicionar perfil")
+  #   POST /profiles      => ProfilesController#create
   resources :profiles, only: [ :index, :new, :create ]
 
   # Recurso SINGULAR (não tem id): só existe "a" sessão atual.

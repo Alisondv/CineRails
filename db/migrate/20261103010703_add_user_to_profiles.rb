@@ -1,3 +1,6 @@
+# Liga cada perfil a UMA conta. Antes desta migration, profiles era uma
+# tabela solta (qualquer perfil aparecia pra qualquer pessoa); depois dela,
+# "profile.user" existe e current_user.profiles passa a fazer sentido.
 class AddUserToProfiles < ActiveRecord::Migration[8.1]
   def change
     # add_reference: cria a coluna user_id, o índice e a foreign_key de uma vez.

@@ -1,4 +1,7 @@
-# Escolhe/troca o perfil atual. Sem senha: só guardamos o id na sessão.
+# Escolhe/troca o perfil atual, dentro de uma conta já logada. Sem senha: só
+# guardamos o id na sessão. Chamado pelo `resource :session` em config/routes.rb
+# (POST /session escolhe, DELETE /session troca de perfil). Quem cria a conta
+# e faz login é outro controller: UserSessionsController.
 class SessionsController < ApplicationController
   skip_before_action :require_profile
 

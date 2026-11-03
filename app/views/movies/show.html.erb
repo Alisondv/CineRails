@@ -1,3 +1,6 @@
+<%# Página de um filme: dados do TMDB (banner, pôster, trailer) + avaliações
+    do nosso banco. @movie é um Hash vindo da API (por isso @movie["title"],
+    com colchetes, e não @movie.title como seria num Active Record). %>
 <% content_for :title, @movie["title"] %>
 
 <%# Fundo: backdrop do filme com gradientes por cima. %>

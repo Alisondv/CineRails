@@ -1,5 +1,7 @@
-# Cadastro de conta nova. Quem se cadastra ainda não tem perfil, então a conta
-# cai direto na tela "Quem está assistindo?", de onde pode criar um.
+# Cadastro de conta nova. Chamado pelas rotas GET/POST /cadastro (config/routes.rb),
+# usa o model User pra validar e salvar. Quem se cadastra ainda não tem perfil,
+# então a conta cai direto na tela "Quem está assistindo?" (ProfilesController),
+# de onde pode criar um.
 class RegistrationsController < ApplicationController
   # Estas ações são o próprio ponto de entrada: não tem conta nem perfil ainda.
   skip_before_action :require_login
@@ -17,6 +19,9 @@ class RegistrationsController < ApplicationController
     if @user.save
       # Cadastro já loga a pessoa: não faz sentido pedir e-mail/senha de novo.
       session[:user_id] = @user.id
+      # notice: é um atalho pra guardar flash[:notice], uma mensagem que
+      # sobrevive a ESTE redirect e aparece uma vez só na próxima página
+      # (renderizada em layouts/_flash.html.erb).
       redirect_to profiles_path, notice: "Conta criada! Agora escolha ou crie um perfil."
     else
       # unprocessable_entity: mantém a tela de cadastro com os erros do @user.
