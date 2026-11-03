@@ -9,11 +9,15 @@ no banco local apenas os dados do usuário: perfis, **Minha Lista** e **avaliaç
 
 | Tela | O que mostra |
 |---|---|
-| Quem está assistindo? | Escolha de perfil (sem senha, o id fica na sessão) |
+| Entrar / Criar conta | Login e cadastro com e-mail e senha (`has_secure_password`, gem bcrypt) |
+| Quem está assistindo? | Perfis da conta logada + botão para adicionar um novo |
 | Início | Banner "hero" + fileiras: Em alta, Populares, Mais bem avaliados, Ação, Comédia, Ficção científica |
 | Filme | Backdrop, pôster, ano, duração, gêneros, nota TMDB, sinopse, trailer do YouTube e avaliações |
 | Minha Lista | Grade com os filmes salvos pelo perfil atual |
 | Busca | Resultados da busca do TMDB em grade |
+
+Fluxo de acesso, no modelo da Netflix: **Entrar/Criar conta → Quem está assistindo? → catálogo**.
+Cada conta só vê os próprios perfis.
 
 Adicionar/remover da lista e enviar uma avaliação **não recarregam a página** (Turbo Streams).
 
@@ -21,19 +25,36 @@ Adicionar/remover da lista e enviar uma avaliação **não recarregam a página*
 
 ## 1. Pré-requisitos
 
-- **Ruby 3.4.12** (o arquivo `.ruby-version` indica a versão)
-- SQLite 3 (já vem no macOS)
+- **Ruby 3.4.x** (o arquivo `.ruby-version` indica a versão; 3.4.11 ou 3.4.12 funcionam igual)
+- SQLite 3
 - Uma conta grátis no TMDB
+- Git
 
-> **Ruby nesta máquina:** o Ruby do macOS (2.6) é antigo demais para o Rails 8. Por isso o
-> Ruby 3.4.12 foi compilado com `ruby-build` em `~/.rubies/ruby-3.4.12`. Para usá-lo, adicione
-> esta linha ao `~/.zshrc` e abra um terminal novo:
->
-> ```sh
-> export PATH="$HOME/.rubies/ruby-3.4.12/bin:$PATH"
-> ```
->
-> Para conferir: `ruby -v` deve mostrar 3.4.12, e `rails -v` deve mostrar 8.1.4.
+O projeto roda igual nas duas plataformas, mas a forma de **instalar o Ruby** e de **chamar os
+comandos do Rails** muda. O resto do guia (a partir da seção 2) é o mesmo para as duas.
+
+### Windows
+
+1. Instale o **Ruby+Devkit 3.4** pelo [RubyInstaller](https://rubyinstaller.org/downloads/)
+   (marque a opção de instalar o MSYS2/Devkit quando o instalador perguntar — é ele que compila
+   gems com extensão nativa, como a `bcrypt` usada no login).
+2. Confira no PowerShell: `ruby -v` deve mostrar 3.4.x, e `gem -v` deve funcionar.
+3. **Importante:** neste projeto, no Windows, chame o Rails sempre como `ruby bin/rails ...`
+   (nunca só `bin/rails ...` nem `rails ...`). O motivo: o binstub `bin/rails` depende de um
+   shebang Unix que o Windows não interpreta sozinho; `ruby bin/rails` contorna isso rodando o
+   script explicitamente pelo interpretador. Por essa mesma razão, `bin/dev` (que usa `foreman`,
+   dependente de `fork()`) **não funciona** no Windows — use `ruby bin/setup` e, se quiser o CSS
+   recompilando ao vivo, `ruby bin/rails tailwindcss:watch` num segundo terminal (seção 3).
+
+### macOS
+
+1. O Ruby do sistema é antigo demais para o Rails 8. Instale o 3.4.x com
+   [rbenv](https://github.com/rbenv/rbenv), [asdf](https://asdf-vm.com) ou compilando com
+   `ruby-build` (ex.: `ruby-build 3.4.12 ~/.rubies/ruby-3.4.12`, adicionando
+   `export PATH="$HOME/.rubies/ruby-3.4.12/bin:$PATH"` ao `~/.zshrc`).
+2. Confira: `ruby -v` deve mostrar 3.4.x, e `rails -v` deve mostrar 8.1.4.
+3. Os comandos do Rails rodam normalmente como `bin/rails ...` e `bin/dev` funciona (sobe o
+   servidor e o watcher do Tailwind juntos, via `Procfile.dev`).
 
 ## 2. Configurar o token do TMDB
 
@@ -42,15 +63,25 @@ Adicionar/remover da lista e enviar uma avaliação **não recarregam a página*
    **API Read Access Token**. É o token longo; a "API Key" curta não serve.
 3. Escolha **uma** das formas abaixo. O token **nunca** vai para o código.
 
-**Opção A: variável de ambiente** (mais simples)
+**Opção A: variável de ambiente** (mais simples — vale só para o terminal aberto)
+
+```powershell
+# Windows (PowerShell)
+$env:TMDB_TOKEN = "eyJhbGciOi..."
+```
 
 ```sh
+# macOS (zsh/bash)
 export TMDB_TOKEN="eyJhbGciOi..."
 ```
 
 **Opção B: credentials criptografadas do Rails**
 
 ```sh
+# Windows
+EDITOR="notepad" ruby bin/rails credentials:edit
+
+# macOS
 EDITOR="code --wait" bin/rails credentials:edit
 ```
 
@@ -69,10 +100,27 @@ abre normalmente e mostra uma tela explicando esses passos.
 
 ## 3. Rodar
 
+```powershell
+# Windows
+ruby bin/setup   # instala as gems, cria o banco, roda migrations + seeds, compila o CSS e já sobe o servidor
+```
+
 ```sh
+# macOS
 bin/setup   # instala as gems, cria o banco, roda migrations + seeds e já sobe o servidor
 # nas próximas vezes:
 bin/dev     # sobe o Rails (porta 3000) e o watcher do Tailwind (Procfile.dev)
+```
+
+No Windows, `bin/dev` não funciona (explicado na seção 1), então nas próximas vezes suba o
+servidor e o watcher do Tailwind **em dois terminais**:
+
+```powershell
+# terminal 1
+ruby bin/rails server
+
+# terminal 2 (recompila o CSS ao vivo enquanto você edita as views)
+ruby bin/rails tailwindcss:watch
 ```
 
 Acesse <http://localhost:3000>. O seed cria uma **conta de demonstração** pronta para a
@@ -85,15 +133,19 @@ Senha:  cinerails123
 
 Testes dos models:
 
-```sh
-bin/rails test
+```powershell
+ruby bin/rails test   # Windows
 ```
 
-Outros comandos úteis na apresentação:
+```sh
+bin/rails test        # macOS
+```
+
+Outros comandos úteis na apresentação (Windows: prefixe tudo com `ruby`, ex. `ruby bin/rails routes`):
 
 ```sh
 bin/rails routes     # tabela de rotas
-bin/rails console    # brincar com os models: Profile.first.movies
+bin/rails console    # brincar com os models: User.first.profiles, Profile.first.movies
 bin/rails db:seed    # recria a conta de demonstração
 ```
 
@@ -110,7 +162,7 @@ bin/rails db:seed    # recria a conta de demonstração
 └────────┬─────────┘   => MoviesController#show, params[:id] = "603"
          ▼
 ┌──────────────────┐   app/controllers/movies_controller.rb
-│   CONTROLLER     │   before_action :require_profile (há perfil na sessão?)
+│   CONTROLLER     │   before_action :require_login, :require_profile (conta e perfil na sessão?)
 └──┬────────────┬──┘
    │            │
    ▼            ▼
@@ -140,19 +192,21 @@ Turbo troca SÓ o elemento #list_button_603. A página não recarrega.
 ## 5. Modelo de dados
 
 ```
-Profile ─┬─< ListItem >─┬─ Movie
-         │              │
-         └─<  Review   >┘
+User ─< Profile ─┬─< ListItem >─┬─ Movie
+                  │              │
+                  └─<  Review   >┘
 
-Profile has_many :list_items          Movie has_many :list_items
+User has_many :profiles, dependent: :destroy     Profile belongs_to :user
+Profile has_many :list_items                     Movie has_many :list_items
 Profile has_many :movies, through: :list_items   (Minha Lista)
-Profile has_many :reviews             Movie has_many :reviews
+Profile has_many :reviews                        Movie has_many :reviews
 ListItem / Review belongs_to :profile, belongs_to :movie
 ```
 
 | Model | Campos | Validações |
 |---|---|---|
-| `Profile` | name, color | nome obrigatório (até 20), cor da paleta |
+| `User` | email, password_digest | e-mail obrigatório/único/formato válido, senha ≥ 6 caracteres (`has_secure_password`) |
+| `Profile` | name, color, user_id | nome obrigatório (até 20), cor da paleta, pertence a uma conta |
 | `Movie` | tmdb_id (único), title, poster_path, backdrop_path, release_date, overview | tmdb_id único, título obrigatório |
 | `ListItem` | profile_id, movie_id | filme único por perfil (+ índice único no banco) |
 | `Review` | profile_id, movie_id, rating, comment | nota inteira de 1 a 5, comentário ≤ 500, uma por perfil/filme |
@@ -160,27 +214,35 @@ ListItem / Review belongs_to :profile, belongs_to :movie
 O `Movie` é um **cache local mínimo**: só é salvo quando entra numa lista ou recebe avaliação
 (`Movie.from_tmdb`).
 
+A senha nunca é guardada em texto puro: `password_digest` armazena só o hash gerado pela gem
+`bcrypt`. Perfis só existem dentro de uma conta — tanto a tela "Quem está assistindo?" quanto a
+troca de perfil usam `current_user.profiles.find(...)`, nunca `Profile.find(...)` sozinho, para
+que a conta A nunca consiga acessar um perfil da conta B.
+
 ## 6. Estrutura de pastas (o que importa)
 
 ```
 app/
 ├── controllers/
-│   ├── application_controller.rb  # before_action, current_profile, rescue_from do TMDB
-│   ├── profiles_controller.rb     # "Quem está assistindo?"
-│   ├── sessions_controller.rb     # escolhe/troca perfil (sessão)
+│   ├── application_controller.rb  # before_action require_login/require_profile, current_user/current_profile, rescue_from do TMDB
+│   ├── registrations_controller.rb # cadastro de conta (new/create)
+│   ├── user_sessions_controller.rb # login/logout da conta (new/create/destroy)
+│   ├── profiles_controller.rb     # "Quem está assistindo?" + adicionar perfil
+│   ├── sessions_controller.rb     # escolhe/troca perfil (sessão), restrito a current_user.profiles
 │   ├── home_controller.rb         # hero + fileiras
 │   ├── movies_controller.rb       # página do filme
 │   ├── list_items_controller.rb   # Minha Lista (index/create/destroy)
 │   ├── reviews_controller.rb      # avaliações (create)
 │   └── search_controller.rb       # busca
-├── models/                        # Profile, Movie, ListItem, Review (Active Record)
+├── models/                        # User, Profile, Movie, ListItem, Review (Active Record)
 ├── services/
 │   └── tmdb_client.rb             # toda a comunicação com o TMDB + Rails.cache
 ├── helpers/
 │   ├── tmdb_helper.rb             # poster_url, backdrop_url, release_year, format_runtime
 │   └── application_helper.rb      # profile_avatar
 ├── views/
-│   ├── layouts/                   # application (esqueleto), _navbar, _flash
+│   ├── layouts/                   # application (esqueleto), _navbar, _flash, _auth_card (login/cadastro)
+│   ├── registrations/ user_sessions/ # formulários de cadastro e login
 │   ├── movies/                    # show + partials _hero, _movie_row, _movie_card, _rating_stars
 │   ├── list_items/                # index, _button, create/destroy.turbo_stream.erb
 │   ├── reviews/                   # _form, _list, _review, _summary, create.turbo_stream.erb
@@ -196,7 +258,7 @@ db/
 ├── migrate/                       # migrations (histórico do banco)
 ├── schema.rb                      # retrato atual do banco (gerado)
 └── seeds.rb                       # conta de demonstração + 1 perfil
-test/models/                       # testes de validações e associações
+test/models/                       # testes de validações e associações (User, Profile, Movie, ListItem, Review)
 ```
 
 ## 7. Comandos usados para criar o projeto
@@ -229,6 +291,16 @@ bin/rails g helper Tmdb
 
 bin/rails db:migrate
 bin/rails db:seed
+
+# Contas (adicionado depois, por cima do projeto inicial sem login)
+bundle add bcrypt                           # has_secure_password
+bin/rails g migration CreateUsers
+bin/rails g migration AddUserToProfiles
+bin/rails g controller Registrations new create --skip-routes --no-helper
+bin/rails g controller UserSessions new create destroy --skip-routes --no-helper
+
+bin/rails db:migrate
+bin/rails db:seed
 ```
 
 Depois dos generators, as migrations ganharam `null: false` e índices únicos compostos.
@@ -242,6 +314,7 @@ os testes de model.
 | `rails` 8.1 | o framework (inclui Active Record, Action View, Turbo, Stimulus, importmap) |
 | `sqlite3` | banco de dados |
 | `tailwindcss-rails` | CSS utilitário (Tailwind v4) sem precisar de Node |
+| `bcrypt` | hash da senha das contas (`has_secure_password`) |
 | `faraday` | requisições HTTP para o TMDB |
 | `rails-i18n` | traduções pt-BR |
 
