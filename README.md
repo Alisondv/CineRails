@@ -5,7 +5,10 @@ didática sobre como o Rails funciona: **MVC, rotas, Active Record, migrations, 
 Hotwire (Turbo + Stimulus) e consumo de API externa**.
 
 Os filmes, pôsteres e trailers vêm da API do [TMDB](https://www.themoviedb.org). O app guarda
-no banco local apenas os dados do usuário: perfis, **Minha Lista** e **avaliações**.
+no banco local apenas os dados do usuário: contas, perfis, **Minha Lista** e **avaliações**.
+
+> Este README é um **tutorial reprodutível**: qualquer pessoa do grupo deve conseguir clonar o
+> repositório e colocar o projeto no ar só seguindo os passos abaixo, no Windows ou no Mac.
 
 | Tela | O que mostra |
 |---|---|
@@ -35,11 +38,15 @@ comandos do Rails** muda. O resto do guia (a partir da seção 2) é o mesmo par
 
 ### Windows
 
-1. Instale o **Ruby+Devkit 3.4** pelo [RubyInstaller](https://rubyinstaller.org/downloads/)
+Tudo aqui roda no **Windows nativo** (PowerShell ou Git Bash) — não precisa de WSL.
+
+1. Instale o [Git para Windows](https://git-scm.com/downloads/win) (ele já traz o Git Bash,
+   caso você prefira um terminal com cara de Linux).
+2. Instale o **Ruby+Devkit 3.4** pelo [RubyInstaller](https://rubyinstaller.org/downloads/)
    (marque a opção de instalar o MSYS2/Devkit quando o instalador perguntar — é ele que compila
    gems com extensão nativa, como a `bcrypt` usada no login).
-2. Confira no PowerShell: `ruby -v` deve mostrar 3.4.x, e `gem -v` deve funcionar.
-3. **Importante:** neste projeto, no Windows, chame o Rails sempre como `ruby bin/rails ...`
+3. Confira no PowerShell: `ruby -v` deve mostrar 3.4.x, e `gem -v` deve funcionar.
+4. **Importante:** neste projeto, no Windows, chame o Rails sempre como `ruby bin/rails ...`
    (nunca só `bin/rails ...` nem `rails ...`). O motivo: o binstub `bin/rails` depende de um
    shebang Unix que o Windows não interpreta sozinho; `ruby bin/rails` contorna isso rodando o
    script explicitamente pelo interpretador. Por essa mesma razão, `bin/dev` (que usa `foreman`,
@@ -48,13 +55,19 @@ comandos do Rails** muda. O resto do guia (a partir da seção 2) é o mesmo par
 
 ### macOS
 
-1. O Ruby do sistema é antigo demais para o Rails 8. Instale o 3.4.x com
-   [rbenv](https://github.com/rbenv/rbenv), [asdf](https://asdf-vm.com) ou compilando com
-   `ruby-build` (ex.: `ruby-build 3.4.12 ~/.rubies/ruby-3.4.12`, adicionando
-   `export PATH="$HOME/.rubies/ruby-3.4.12/bin:$PATH"` ao `~/.zshrc`).
-2. Confira: `ruby -v` deve mostrar 3.4.x, e `rails -v` deve mostrar 8.1.4.
+1. O Ruby do sistema é antigo demais para o Rails 8. Instale o [Homebrew](https://brew.sh)
+   (se ainda não tiver) e, por ele, o `rbenv` (gerenciador de versões do Ruby):
+   ```sh
+   brew install rbenv ruby-build git
+   rbenv init   # siga a instrução que ele imprime para o ~/.zshrc, depois abra um terminal novo
+   rbenv install 3.4.12
+   rbenv global 3.4.12
+   ```
+2. Confira: `ruby -v` deve mostrar 3.4.x, e `rails -v` deve mostrar 8.1.4 (instale com
+   `gem install rails -v 8.1.4` se ainda não tiver).
 3. Os comandos do Rails rodam normalmente como `bin/rails ...` e `bin/dev` funciona (sobe o
-   servidor e o watcher do Tailwind juntos, via `Procfile.dev`).
+   servidor e o watcher do Tailwind juntos, via `Procfile.dev`) — não precisa do passo de
+   "dois terminais" da seção 3, que é só para quem está no Windows.
 
 ## 2. Configurar o token do TMDB
 
@@ -174,7 +187,7 @@ bin/rails db:seed    # recria a conta de demonstração
      │      └─ não ──► HTTP GET api.themoviedb.org (Faraday) e guarda no cache por 6h
      ▼
 ┌──────────────────┐   app/views/movies/show.html.erb
-│      VIEW        │   + partials (_list_button, _rating_stars, reviews/_form...)
+│      VIEW        │   + partials (list_items/_button, movies/_rating_stars, reviews/_form...)
 └────────┬─────────┘   dentro de layouts/application.html.erb
          ▼
      HTML para o navegador
@@ -319,6 +332,14 @@ os testes de model.
 | `rails-i18n` | traduções pt-BR |
 
 ## 9. Créditos
+
+Projeto feito em grupo para a disciplina de Engenharia de Software (UNAERP) por:
+
+- Alison Santos
+- Pedro
+- Jamile
+- Diego
+- Gabrielly
 
 Dados e imagens: [TMDB](https://www.themoviedb.org).
 *This product uses the TMDB API but is not endorsed or certified by TMDB.*
