@@ -3,9 +3,22 @@
 # "profile.user" existe e current_user.profiles passa a fazer sentido.
 class AddUserToProfiles < ActiveRecord::Migration[8.1]
   def change
-    # add_reference: cria a coluna user_id, o índice e a foreign_key de uma vez.
-    # null: false => todo perfil tem que pertencer a uma conta (casa com o
-    # belongs_to :user, obrigatório por padrão, que vamos adicionar no model).
-    add_reference :profiles, :user, null: false, foreign_key: true
+    return if column_exists?(:profiles, :user_id)
+
+    add_reference :profiles, :user, null: true
+
+    user_id = select_value("SELECT id FROM users ORDER BY id LIMIT 1")
+    unless user_id
+      now = connection.quote(Time.current)
+      execute <<~SQL
+        INSERT INTO users (email, password_digest, created_at, updated_at)
+        VALUES ('legacy@cinerails.invalid', '!', #{now}, #{now})
+      SQL
+      user_id = select_value("SELECT id FROM users ORDER BY id LIMIT 1")
+    end
+
+    execute "UPDATE profiles SET user_id = #{connection.quote(user_id)} WHERE user_id IS NULL"
+    change_column_null :profiles, :user_id, false
+    add_foreign_key :profiles, :users
   end
 end

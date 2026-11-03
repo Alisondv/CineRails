@@ -62,6 +62,8 @@ ActiveRecord::Schema[8.1].define(version: 2026_11_03_010703) do
     t.index ["email"], name: "index_users_on_email", unique: true
   end
 
+  add_foreign_key "list_items", "movies"
+  add_foreign_key "list_items", "profiles"
   add_foreign_key "profiles", "users"
   add_foreign_key "reviews", "movies"
   add_foreign_key "reviews", "profiles"
