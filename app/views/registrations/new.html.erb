@@ -1,37 +1,36 @@
 <% content_for :title, "Criar conta" %>
 
-<div class="flex min-h-[80vh] flex-col items-center justify-center px-4">
-  <p class="mb-10 text-4xl font-black tracking-tight text-brand">Cine<span class="text-white">Rails</span></p>
+<%= render layout: "layouts/auth_card" do %>
+  <h1 class="text-2xl font-medium">Criar conta</h1>
+  <p class="mb-6 mt-1 text-sm text-gray-400">Leva menos de um minuto.</p>
+
+  <% if @user.errors.any? %>
+    <div class="mb-4 rounded-md bg-brand px-4 py-3 text-sm text-white">
+      <ul class="list-disc pl-4">
+        <% @user.errors.full_messages.each do |message| %>
+          <li><%= message %></li>
+        <% end %>
+      </ul>
+    </div>
+  <% end %>
 
   <%# form_with model: @user => os campos saem como user[email], user[password]...,
       exatamente o que registration_params espera no controller. %>
-  <%= form_with model: @user, url: registration_path, class: "w-full max-w-sm space-y-4" do |form| %>
-    <h1 class="text-2xl font-medium mb-2">Criar conta</h1>
-
-    <% if @user.errors.any? %>
-      <div class="rounded-md bg-brand px-4 py-3 text-sm text-white">
-        <ul class="list-disc pl-4">
-          <% @user.errors.full_messages.each do |message| %>
-            <li><%= message %></li>
-          <% end %>
-        </ul>
-      </div>
-    <% end %>
-
+  <%= form_with model: @user, url: registration_path, class: "space-y-4" do |form| %>
     <%= form.email_field :email, placeholder: "E-mail", required: true, autofocus: true,
-          class: "w-full rounded-md border border-white/20 bg-black/60 px-4 py-3 text-white placeholder-gray-500 focus:border-white focus:outline-none" %>
+          class: "w-full rounded-md border border-white/20 bg-white/5 px-4 py-3 text-white placeholder-gray-500 focus:border-brand focus:outline-none" %>
 
     <%= form.password_field :password, placeholder: "Senha (mínimo 6 caracteres)", required: true,
-          class: "w-full rounded-md border border-white/20 bg-black/60 px-4 py-3 text-white placeholder-gray-500 focus:border-white focus:outline-none" %>
+          class: "w-full rounded-md border border-white/20 bg-white/5 px-4 py-3 text-white placeholder-gray-500 focus:border-brand focus:outline-none" %>
 
     <%= form.password_field :password_confirmation, placeholder: "Confirme a senha", required: true,
-          class: "w-full rounded-md border border-white/20 bg-black/60 px-4 py-3 text-white placeholder-gray-500 focus:border-white focus:outline-none" %>
+          class: "w-full rounded-md border border-white/20 bg-white/5 px-4 py-3 text-white placeholder-gray-500 focus:border-brand focus:outline-none" %>
 
     <%= form.submit "Criar conta",
-          class: "w-full rounded-md bg-brand px-4 py-3 font-semibold text-white cursor-pointer hover:bg-brand/90" %>
+          class: "w-full rounded-md bg-brand px-4 py-3 font-semibold text-white cursor-pointer transition hover:bg-brand-dark" %>
   <% end %>
 
-  <p class="mt-6 text-gray-400">
+  <p class="mt-6 text-sm text-gray-400">
     Já tem conta? <%= link_to "Entrar", new_user_session_path, class: "text-white hover:underline" %>
   </p>
-</div>
+<% end %>
