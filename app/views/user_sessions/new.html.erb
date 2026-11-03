@@ -1,0 +1,24 @@
+<% content_for :title, "Entrar" %>
+
+<div class="flex min-h-[80vh] flex-col items-center justify-center px-4">
+  <p class="mb-10 text-4xl font-black tracking-tight text-brand">Cine<span class="text-white">Rails</span></p>
+
+  <%# form_with sem "model:" => os campos saem como "email" e "password" soltos,
+      exatamente o que UserSessionsController#create lê em params[:email]/params[:password]. %>
+  <%= form_with url: user_session_path, class: "w-full max-w-sm space-y-4" do |form| %>
+    <h1 class="text-2xl font-medium mb-2">Entrar</h1>
+
+    <%= form.email_field :email, placeholder: "E-mail", required: true, autofocus: true,
+          class: "w-full rounded-md border border-white/20 bg-black/60 px-4 py-3 text-white placeholder-gray-500 focus:border-white focus:outline-none" %>
+
+    <%= form.password_field :password, placeholder: "Senha", required: true,
+          class: "w-full rounded-md border border-white/20 bg-black/60 px-4 py-3 text-white placeholder-gray-500 focus:border-white focus:outline-none" %>
+
+    <%= form.submit "Entrar",
+          class: "w-full rounded-md bg-brand px-4 py-3 font-semibold text-white cursor-pointer hover:bg-brand/90" %>
+  <% end %>
+
+  <p class="mt-6 text-gray-400">
+    Não tem conta? <%= link_to "Cadastre-se", new_registration_path, class: "text-white hover:underline" %>
+  </p>
+</div>

@@ -6,12 +6,15 @@ class ApplicationController < ActionController::Base
   # Changes to the importmap will invalidate the etag for HTML responses
   stale_when_importmap_changes
 
-  # before_action: roda ANTES de toda ação. Se ele fizer redirect,
-  # a ação nem chega a executar. Aqui: sem perfil escolhido => tela de perfis.
+  # before_action: roda ANTES de toda ação, NA ORDEM declarada. Se um deles fizer
+  # redirect, a ação nem chega a executar e os before_actions seguintes são pulados.
+  # Por isso require_login vem antes de require_profile: sem conta logada não faz
+  # sentido nem perguntar qual perfil usar.
+  before_action :require_login
   before_action :require_profile
 
   # helper_method deixa o método disponível também nas views (navbar, por exemplo).
-  helper_method :current_profile
+  helper_method :current_user, :current_profile
 
   # rescue_from: se QUALQUER ação levantar um erro do TMDB (token ausente,
   # token inválido, rede fora...), mostramos uma página amigável em vez de
@@ -20,10 +23,19 @@ class ApplicationController < ActionController::Base
 
   private
 
-  # O perfil "logado" é só um id guardado na sessão (cookie assinado).
+  # A conta "logada" é só um id guardado na sessão (cookie assinado).
   # ||= memoriza o resultado: a consulta ao banco é feita uma vez por requisição.
+  def current_user
+    @current_user ||= User.find_by(id: session[:user_id])
+  end
+
+  # O perfil "logado" é só um id guardado na sessão (cookie assinado).
   def current_profile
     @current_profile ||= Profile.find_by(id: session[:profile_id])
+  end
+
+  def require_login
+    redirect_to new_user_session_path unless current_user
   end
 
   def require_profile

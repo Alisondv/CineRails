@@ -4,6 +4,16 @@ Rails.application.routes.draw do
   # Página inicial (GET /) => HomeController#index
   root "home#index"
 
+  # Cadastro de conta nova (e-mail + senha). GET mostra o formulário, POST cria.
+  get  "cadastro", to: "registrations#new",    as: :new_registration
+  post "cadastro", to: "registrations#create", as: :registration
+
+  # Login/logout da CONTA (e-mail + senha). Não confundir com o `resource :session`
+  # abaixo: aquele troca o PERFIL já dentro de uma conta logada; este entra/sai da conta.
+  get    "login",  to: "user_sessions#new",     as: :new_user_session
+  post   "login",  to: "user_sessions#create",  as: :user_session
+  delete "logout", to: "user_sessions#destroy", as: :destroy_user_session
+
   # "Quem está assistindo?"  GET /profiles => ProfilesController#index
   resources :profiles, only: [ :index ]
 

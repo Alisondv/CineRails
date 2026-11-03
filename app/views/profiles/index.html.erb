@@ -19,4 +19,9 @@
   <% if @profiles.empty? %>
     <p class="mt-10 text-gray-400">Nenhum perfil cadastrado. Rode <code class="text-white">bin/rails db:seed</code>.</p>
   <% end %>
+
+  <%# button_to destroy_user_session_path: DELETE /logout, sai da CONTA (diferente
+      de trocar de perfil, que fica dentro da navbar depois que um perfil é escolhido). %>
+  <%= button_to "Sair da conta", destroy_user_session_path, method: :delete,
+        class: "mt-12 text-sm text-gray-400 hover:text-white cursor-pointer bg-transparent" %>
 </div>
