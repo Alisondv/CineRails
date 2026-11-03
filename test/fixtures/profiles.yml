@@ -1,8 +1,12 @@
 # Fixtures = dados de teste carregados no banco antes de cada teste.
+# user: <label> liga este perfil à conta com esse nome em users.yml
+# (o Rails resolve o label para o user_id de verdade na hora de carregar).
 ana:
   name: Ana
   color: "#e50914"
+  user: ana_conta
 
 bruno:
   name: Bruno
   color: "#2563eb"
+  user: bruno_conta

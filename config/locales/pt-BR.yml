@@ -16,6 +16,7 @@ pt-BR:
       profile:
         name: Nome
         color: Cor
+        user: Conta
       movie:
         title: Título
       review:

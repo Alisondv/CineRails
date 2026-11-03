@@ -1,18 +1,26 @@
 require "test_helper"
 
 class ProfileTest < ActiveSupport::TestCase
-  test "é válido com nome e cor da paleta" do
-    assert Profile.new(name: "Carla", color: Profile::COLORS.first).valid?
+  test "é válido com nome, cor da paleta e conta" do
+    profile = Profile.new(name: "Carla", color: Profile::COLORS.first, user: users(:ana_conta))
+    assert profile.valid?
   end
 
   test "exige nome" do
-    profile = Profile.new(name: "", color: Profile::COLORS.first)
+    profile = Profile.new(name: "", color: Profile::COLORS.first, user: users(:ana_conta))
     assert_not profile.valid?
     assert_includes profile.errors[:name], "não pode ficar em branco"
   end
 
   test "só aceita cores da paleta" do
-    assert_not Profile.new(name: "Carla", color: "#123456").valid?
+    profile = Profile.new(name: "Carla", color: "#123456", user: users(:ana_conta))
+    assert_not profile.valid?
+  end
+
+  test "exige uma conta (user)" do
+    profile = Profile.new(name: "Carla", color: Profile::COLORS.first)
+    assert_not profile.valid?
+    assert_includes profile.errors[:user], "é obrigatório(a)"
   end
 
   test "has_many :through devolve os filmes da Minha Lista" do
