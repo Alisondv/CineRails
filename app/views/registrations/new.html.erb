@@ -4,15 +4,7 @@
   <h1 class="text-2xl font-medium">Criar conta</h1>
   <p class="mb-6 mt-1 text-sm text-gray-400">Leva menos de um minuto.</p>
 
-  <% if @user.errors.any? %>
-    <div class="mb-4 rounded-md bg-brand px-4 py-3 text-sm text-white">
-      <ul class="list-disc pl-4">
-        <% @user.errors.full_messages.each do |message| %>
-          <li><%= message %></li>
-        <% end %>
-      </ul>
-    </div>
-  <% end %>
+  <%= render "shared/error_messages", model: @user, wrapper_class: "mb-4" %>
 
   <%# form_with model: @user => os campos saem como user[email], user[password]...,
       exatamente o que registration_params espera no controller. %>

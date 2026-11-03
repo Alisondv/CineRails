@@ -1,5 +1,5 @@
 # Cadastro de conta nova. Quem se cadastra ainda não tem perfil, então a conta
-# cai direto na tela "Quem está assistindo?", de onde pode criar um (Etapa 4).
+# cai direto na tela "Quem está assistindo?", de onde pode criar um.
 class RegistrationsController < ApplicationController
   # Estas ações são o próprio ponto de entrada: não tem conta nem perfil ainda.
   skip_before_action :require_login

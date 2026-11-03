@@ -6,7 +6,9 @@
   <%# Brilho decorativo: um gradiente radial na cor da marca, bem sutil. %>
   <div class="pointer-events-none absolute inset-0 bg-[radial-gradient(ellipse_at_top,rgba(229,9,20,0.18),transparent_60%)]"></div>
 
-  <p class="relative mb-10 text-4xl font-black tracking-tight text-brand">Cine<span class="text-white">Rails</span></p>
+  <div class="relative">
+    <%= render "shared/logo" %>
+  </div>
 
   <div class="relative w-full max-w-sm rounded-xl bg-black/70 p-8 shadow-2xl ring-1 ring-white/10 backdrop-blur-sm">
     <%= yield %>

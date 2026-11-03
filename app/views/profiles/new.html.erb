@@ -1,20 +1,12 @@
 <% content_for :title, "Adicionar perfil" %>
 
 <div class="flex min-h-[80vh] flex-col items-center justify-center px-4">
-  <p class="mb-10 text-4xl font-black tracking-tight text-brand">Cine<span class="text-white">Rails</span></p>
+  <%= render "shared/logo" %>
 
   <%= form_with model: @profile, url: profiles_path, class: "w-full max-w-sm space-y-6" do |form| %>
     <h1 class="text-2xl font-medium mb-2">Adicionar perfil</h1>
 
-    <% if @profile.errors.any? %>
-      <div class="rounded-md bg-brand px-4 py-3 text-sm text-white">
-        <ul class="list-disc pl-4">
-          <% @profile.errors.full_messages.each do |message| %>
-            <li><%= message %></li>
-          <% end %>
-        </ul>
-      </div>
-    <% end %>
+    <%= render "shared/error_messages", model: @profile, wrapper_class: nil %>
 
     <%= form.text_field :name, placeholder: "Nome do perfil", required: true, autofocus: true,
           class: "w-full rounded-md border border-white/20 bg-black/60 px-4 py-3 text-white placeholder-gray-500 focus:border-white focus:outline-none" %>

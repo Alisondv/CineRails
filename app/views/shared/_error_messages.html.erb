@@ -1,0 +1,14 @@
+<%# Lista as mensagens de erro de validação de um model, no mesmo estilo nos
+    formulários de cadastro e de "adicionar perfil".
+    "model" é o registro com os erros (@user, @profile...).
+    "wrapper_class" é a classe extra do <div>: os dois formulários usam
+    espaçamentos diferentes, dependendo de o bloco ficar dentro ou fora do <form>. %>
+<% if model.errors.any? %>
+  <div class="<%= wrapper_class %> rounded-md bg-brand px-4 py-3 text-sm text-white">
+    <ul class="list-disc pl-4">
+      <% model.errors.full_messages.each do |message| %>
+        <li><%= message %></li>
+      <% end %>
+    </ul>
+  </div>
+<% end %>
