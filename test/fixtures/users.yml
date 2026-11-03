@@ -1,0 +1,10 @@
+# Fixtures = dados de teste carregados no banco antes de cada teste.
+# password_digest precisa ser um hash bcrypt válido, por isso usamos ERB em
+# vez de escrever a senha em texto puro aqui.
+ana_conta:
+  email: ana@cinerails.test
+  password_digest: <%= BCrypt::Password.create("senha123") %>
+
+bruno_conta:
+  email: bruno@cinerails.test
+  password_digest: <%= BCrypt::Password.create("senha123") %>

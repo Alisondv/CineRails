@@ -3,11 +3,16 @@
 pt-BR:
   activerecord:
     models:
+      user: Conta
       profile: Perfil
       movie: Filme
       list_item: Item da lista
       review: Avaliação
     attributes:
+      user:
+        email: E-mail
+        password: Senha
+        password_confirmation: Confirmação de senha
       profile:
         name: Nome
         color: Cor
