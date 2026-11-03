@@ -15,7 +15,8 @@ Rails.application.routes.draw do
   delete "logout", to: "user_sessions#destroy", as: :destroy_user_session
 
   # "Quem está assistindo?"  GET /profiles => ProfilesController#index
-  resources :profiles, only: [ :index ]
+  # GET /profiles/new e POST /profiles => formulário "Adicionar perfil"
+  resources :profiles, only: [ :index, :new, :create ]
 
   # Recurso SINGULAR (não tem id): só existe "a" sessão atual.
   #   POST   /session => SessionsController#create   (escolhe o perfil)

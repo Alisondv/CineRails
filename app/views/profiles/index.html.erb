@@ -14,10 +14,16 @@
         <span class="text-gray-400 group-hover:text-white"><%= profile.name %></span>
       <% end %>
     <% end %>
+
+    <%# Último "avatar" da fileira: não escolhe perfil, leva ao formulário de criar um novo. %>
+    <%= link_to new_profile_path, class: "group flex flex-col items-center gap-3" do %>
+      <span class="flex h-24 w-24 sm:h-36 sm:w-36 items-center justify-center rounded-md border-2 border-dashed border-gray-600 text-4xl text-gray-500 transition group-hover:border-white group-hover:text-white">+</span>
+      <span class="text-gray-400 group-hover:text-white">Adicionar perfil</span>
+    <% end %>
   </div>
 
   <% if @profiles.empty? %>
-    <p class="mt-10 text-gray-400">Nenhum perfil cadastrado. Rode <code class="text-white">bin/rails db:seed</code>.</p>
+    <p class="mt-10 text-gray-400">Nenhum perfil ainda. Clique em "Adicionar perfil" para criar o primeiro.</p>
   <% end %>
 
   <%# button_to destroy_user_session_path: DELETE /logout, sai da CONTA (diferente

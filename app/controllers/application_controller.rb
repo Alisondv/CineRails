@@ -30,8 +30,13 @@ class ApplicationController < ActionController::Base
   end
 
   # O perfil "logado" é só um id guardado na sessão (cookie assinado).
+  # current_user.profiles (não Profile.find_by) garante que, mesmo que o
+  # cookie da sessão seja adulterado com o id de um perfil de outra conta,
+  # current_profile nunca aponta pra fora da conta logada.
+  # &. (safe navigation): current_profile é chamado pelo layout em TODA
+  # página, inclusive /login e /cadastro, onde current_user ainda é nil.
   def current_profile
-    @current_profile ||= Profile.find_by(id: session[:profile_id])
+    @current_profile ||= current_user&.profiles&.find_by(id: session[:profile_id])
   end
 
   def require_login
