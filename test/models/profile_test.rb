@@ -23,6 +23,10 @@ class ProfileTest < ActiveSupport::TestCase
     assert_includes profile.errors[:user], "é obrigatório(a)"
   end
 
+  test "pertence à conta certa (belongs_to :user)" do
+    assert_equal users(:ana_conta), profiles(:ana).user
+  end
+
   test "has_many :through devolve os filmes da Minha Lista" do
     assert_equal [ movies(:matrix) ], profiles(:ana).movies.to_a
   end

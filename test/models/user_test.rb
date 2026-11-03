@@ -45,4 +45,10 @@ class UserTest < ActiveSupport::TestCase
   test "a fixture carrega com uma senha que autentica de verdade" do
     assert users(:ana_conta).authenticate("senha123")
   end
+
+  test "apagar a conta apaga os perfis dela (dependent: :destroy)" do
+    assert_difference "Profile.count", -1 do
+      users(:ana_conta).destroy
+    end
+  end
 end
